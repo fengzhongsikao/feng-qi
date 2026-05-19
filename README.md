@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 风起 · 诗词
 
-## Getting Started
+随机推荐一首诗，感受千年风雅。
 
-First, run the development server:
+## 功能
+
+- **随机诗词** — 首页随机展示一首唐诗宋词
+- **搜索诗词** — 支持按标题、作者、正文关键词搜索
+- **作者浏览** — 按作者浏览诗词
+- **诗词详情** — 查看诗词完整内容
+
+## 技术栈
+
+- [Next.js](https://nextjs.org) 16 — React 框架
+- [React](https://react.dev) 19
+- [TypeScript](https://www.typescriptlang.org)
+- [Tailwind CSS](https://tailwindcss.com) v4 — 样式
+- [shadcn/ui](https://ui.shadcn.com) — UI 组件（基于 [Base UI](https://base-ui.com)）
+- [Lucide](https://lucide.dev) — 图标
+
+## 本地开发
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+打开 [http://localhost:3000](http://localhost:3000) 即可访问。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 构建
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+pnpm build
+pnpm start
+```
 
-## Learn More
+## 项目结构
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/              # 路由页面
+  page.tsx        # 首页（随机诗词）
+  search/page.tsx # 搜索页
+  authors/page.tsx# 作者列表
+  poems/[id]/     # 诗词详情
+components/       # UI 组件
+lib/              # 工具函数和类型定义
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 环境要求
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Node.js 20+
+- pnpm
