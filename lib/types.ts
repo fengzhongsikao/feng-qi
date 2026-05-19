@@ -40,3 +40,18 @@ export interface PaginatedResponse<T> {
   pagination: Pagination;
   lang: string;
 }
+
+// 自定义 API（http://122.51.104.131:8000）相关类型
+export interface CustomPoem {
+  id: string;
+  title: string;
+  author: string;
+  paragraphs: string[];
+}
+
+export interface CustomPoemsResponse {
+  total: number;
+  page: number;
+  page_size: number;
+  data: CustomPoem[];
+}

@@ -17,7 +17,6 @@ import {
 const tabs = [
   { label: "首页", href: "/" },
   { label: "作者", href: "/authors" },
-  { label: "朝代", href: "/dynasties" },
 ];
 
 const searchTypes = [
@@ -30,6 +29,11 @@ const searchTypes = [
 export function TabBar() {
   const pathname = usePathname();
   const [type, setType] = useState<string | null>(null);
+
+  const searchParamName =
+    type === "author" ? "author"
+    : type === "title" ? "title"
+    : "keyword";
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-sm">
@@ -61,13 +65,12 @@ export function TabBar() {
           <div className="relative">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
             <input
-              name="q"
+              name={searchParamName}
               type="text"
               placeholder="搜索诗词..."
               className="h-8 w-36 rounded-l-md border border-input bg-background pl-8 pr-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20"
             />
           </div>
-          <input type="hidden" name="type" value={type ?? ""} />
           <Select value={type} onValueChange={setType}>
             <SelectTrigger
               size="default"

@@ -38,13 +38,13 @@ export default async function AuthorsPage({
               className="rounded-lg border border-border bg-card p-4 text-center"
             >
               <Link
-                href={`/search?q=${encodeURIComponent(author.name)}&type=author`}
+                href={`/search?author=${encodeURIComponent(author.name)}`}
                 className="block text-sm font-medium transition-colors hover:text-primary"
               >
                 {author.name}
               </Link>
               <Link
-                href={`/search?q=${encodeURIComponent(author.dynasty.name)}`}
+                href={`/search?keyword=${encodeURIComponent(author.dynasty.name)}`}
                 className="block mt-1 text-xs text-muted-foreground transition-colors hover:text-primary"
               >
                 {author.dynasty.name}
