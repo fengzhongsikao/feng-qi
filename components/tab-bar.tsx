@@ -14,11 +14,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const tabs = [
-  { label: "首页", href: "/" },
-  { label: "作者", href: "/authors" },
-];
-
 const searchTypes = [
   { value: "", label: "全文" },
   { value: "title", label: "标题" },
@@ -39,26 +34,17 @@ export function TabBar() {
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-sm">
       <div className="mx-auto flex h-12 max-w-4xl items-center gap-1 px-4">
         <nav className="flex items-center gap-1">
-          {tabs.map((tab) => {
-            const isActive =
-              tab.href === "/"
-                ? pathname === "/"
-                : pathname.startsWith(tab.href);
-            return (
-              <Link
-                key={tab.href}
-                href={tab.href}
-                className={cn(
-                  "inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
-                  isActive
-                    ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                )}
-              >
-                {tab.label}
-              </Link>
-            );
-          })}
+          <Link
+            href="/"
+            className={cn(
+              "inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
+              pathname === "/"
+                ? "bg-primary/10 text-primary"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted"
+            )}
+          >
+            首页
+          </Link>
         </nav>
         <div className="flex-1" />
         <Form action="/search" className="flex items-center">

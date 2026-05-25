@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 import { type CustomPoem, type CustomPoemsResponse } from "@/lib/types";
 
 const API_BASE = "http://122.51.104.131:8000";
@@ -35,7 +36,7 @@ async function searchPoems(
   const res = await fetch(
     `${API_BASE}/api/poems/search?${params.toString()}`,
     {
-      cache: "no-store",
+      next: { revalidate: 300 },
     }
   );
   const json: CustomPoemsResponse = await res.json();

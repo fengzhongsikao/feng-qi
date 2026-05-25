@@ -6,7 +6,7 @@ const API_BASE = "http://122.51.104.131:8000";
 
 async function getPoem(id: string): Promise<CustomPoem | null> {
   const res = await fetch(`${API_BASE}/api/poems/${id}`, {
-    cache: "no-store",
+    next: { revalidate: 300 },
   });
   if (!res.ok) return null;
   return res.json();
