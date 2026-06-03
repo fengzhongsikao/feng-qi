@@ -11,6 +11,9 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 
+const IMAGE_CLASS =
+  "w-[250px] max-h-[min(520px,70vh)] h-auto rounded-lg object-contain shadow-lg";
+
 const images: Record<string, string[]> = {
   dao: [
     "/dao/yuqing-yuanshi-tianzun.jpg",
@@ -35,57 +38,38 @@ const displayNames: Record<string, string> = {
 
 function StatueGallery({ type }: { type: string }) {
   const imageList = images[type];
-  const [mounted, setMounted] = useState(false);
   const [api, setApi] = useState<CarouselApi>();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
     if (!api) return;
-    setCurrentIndex(api.selectedScrollSnap());
-    api.on("select", () => {
+
+    const onSelect = () => {
       setCurrentIndex(api.selectedScrollSnap());
-    });
+    };
+
+    onSelect();
+    api.on("select", onSelect);
+
+    return () => {
+      api.off("select", onSelect);
+    };
   }, [api]);
 
   const fileName = displayNames[imageList[currentIndex]] ?? "";
 
-  if (!mounted) {
-    return (
-      <div className="flex flex-col items-center gap-4">
-        <h2 className="text-xl font-semibold">{fileName}</h2>
-        <img
-          src={imageList[0]}
-          alt={displayNames[imageList[0]] ?? ""}
-          width={250}
-          height={510}
-          className="rounded-lg object-cover shadow-lg"
-          style={{ width: 250, height: 510 }}
-        />
-        <span className="text-sm text-zinc-400">
-          1 / {imageList.length}
-        </span>
-      </div>
-    );
-  }
-
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex flex-col items-center gap-4 px-12">
       <h2 className="text-xl font-semibold">{fileName}</h2>
-      <Carousel setApi={setApi} className="w-[250px]">
-        <CarouselContent>
+      <Carousel setApi={setApi} opts={{ duration: 15 }} className="w-[250px]">
+        <CarouselContent className="-ml-0">
           {imageList.map((src) => (
-            <CarouselItem key={src}>
+            <CarouselItem key={src} className="pl-0">
               <img
                 src={src}
                 alt={displayNames[src] ?? ""}
                 width={250}
-                height={510}
-                className="rounded-lg object-cover shadow-lg"
-                style={{ width: 250, height: 510 }}
+                className={IMAGE_CLASS}
               />
             </CarouselItem>
           ))}
@@ -101,19 +85,25 @@ function StatueGallery({ type }: { type: string }) {
 }
 
 export default function StatuesPage() {
+  const [activeTab, setActiveTab] = useState("dao");
+
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex flex-1 w-full max-w-3xl flex-col items-center gap-8 py-32 px-16 bg-white dark:bg-black">
-        <Tabs defaultValue="dao" className="w-full max-w-md flex-col">
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="w-full max-w-md flex-col"
+        >
           <TabsList className="w-full">
             <TabsTrigger value="dao" className="flex-1">道</TabsTrigger>
             <TabsTrigger value="fo" className="flex-1">佛</TabsTrigger>
           </TabsList>
-          <TabsContent value="dao">
-            <StatueGallery type="dao" />
+          <TabsContent value="dao" className="mt-4 flex justify-center">
+            {activeTab === "dao" && <StatueGallery key="dao" type="dao" />}
           </TabsContent>
-          <TabsContent value="fo">
-            <StatueGallery type="fo" />
+          <TabsContent value="fo" className="mt-4 flex justify-center">
+            {activeTab === "fo" && <StatueGallery key="fo" type="fo" />}
           </TabsContent>
         </Tabs>
       </main>
