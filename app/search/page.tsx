@@ -1,9 +1,7 @@
 import Link from "next/link";
 
 import { type CustomPoem, type CustomPoemsResponse } from "@/lib/types";
-
-const API_BASE = "http://122.51.104.131:8000";
-const DEFAULT_PAGE_SIZE = 20;
+import { API_BASE, DEFAULT_PAGE_SIZE } from "@/lib/config";
 
 const typeLabels: Record<string, string> = {
   title: "标题",

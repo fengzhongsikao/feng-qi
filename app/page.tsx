@@ -1,10 +1,9 @@
 import Link from "next/link";
-import { type CustomPoem } from "@/lib/types";
+import { type ApiResponse, type PoemData } from "@/lib/types";
+import { API_BASE } from "@/lib/config";
 
-const API_BASE = "http://122.51.104.131:8000";
-
-async function getPoem(): Promise<CustomPoem> {
-  const res = await fetch(`${API_BASE}/api/poems/random`, {
+async function getPoem(): Promise<ApiResponse<PoemData>> {
+  const res = await fetch(`${API_BASE}/api/poems/random?lang=zh-Hant`, {
     cache: "no-store",
   });
   return res.json();
@@ -16,19 +15,29 @@ export default async function Home({
   searchParams: Promise<{ refresh?: string }>;
 }) {
   await searchParams;
-  const poem = await getPoem();
+  const res = await getPoem().catch((e) => {
+    console.error("获取诗词失败:", e);
+    return null;
+  });
+  const poem = res?.data;
+
+  if (!poem) {
+    return <div className="flex flex-1 items-center justify-center p-8 text-zinc-500">暂无数据</div>;
+  }
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex flex-1 w-full max-w-3xl flex-col items-center gap-8 py-32 px-16 bg-white dark:bg-black">
         <h1 className="text-3xl font-bold tracking-wide">{poem.title}</h1>
-        <span className="text-sm text-rose-600 dark:text-rose-400">
-          <Link href={`/search?author=${encodeURIComponent(poem.author)}`} className="hover:underline">
-            {poem.author}
+        <div className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400">
+          {poem.dynasty && <span>{poem.dynasty.name}</span>}
+          <Link href={`/search?author=${encodeURIComponent(poem.author.name)}`} className="hover:underline">
+            {poem.author.name}
           </Link>
-        </span>
+        </div>
+        {poem.type && <span className="text-sm text-rose-600 dark:text-rose-400">{poem.type.name}</span>}
         <div className="flex flex-col gap-3 text-lg leading-relaxed text-center font-semibold">
-          {poem.paragraphs.map((line, index) => (
+          {poem.content.map((line, index) => (
             <p key={index}>{line}</p>
           ))}
         </div>
